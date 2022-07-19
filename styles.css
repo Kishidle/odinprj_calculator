@@ -1,0 +1,32 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.header, .footer{
+  width: 100%;
+  height: 100px;
+  display: flex;
+}
+
+.calculator-container{
+  width: 100%;
+  height: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calculator-ui{
+  display: flex;
+  width: 50%;
+  height: 750px;
+  border: 1px solid red;
+  border-radius: 10px;
+}
+.result-container{
+  width: 80%;
+  height: 10%;
+}
+
