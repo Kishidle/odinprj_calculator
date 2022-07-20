@@ -19,14 +19,18 @@
 }
 
 .calculator-ui{
-  display: flex;
+  display: grid;
+  grid-template-rows: 25% repeat(5, 15%);
+  grid-template-columns: repeat(4, 25%);
   width: 50%;
   height: 750px;
   border: 1px solid red;
   border-radius: 10px;
+
 }
 .result-container{
-  width: 80%;
-  height: 10%;
+  grid-column-start: 1;
+  grid-column-end: 5;
+  background-color: green;
 }
 
