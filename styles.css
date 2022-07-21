@@ -18,6 +18,9 @@
   align-items: center;
 }
 
+
+
+
 .calculator-ui{
   display: grid;
   grid-template-rows: 25% repeat(5, 15%);
@@ -28,6 +31,32 @@
   border-radius: 10px;
 
 }
+
+.result-container{
+  width: 90%;
+  height: 80%;
+  border: 1px solid black;
+  grid-area: results;
+  grid-area: 1 / 1 / 1 / 5;
+  place-self: center;
+  font-size: 78px;
+  text-align: right;
+}
+
+#btn0{
+  width: 76%;
+  grid-area: 6 / 1 / 6 / 3;
+}
+.calculator-button{
+  width: 50%;
+  height: 90%;
+  
+  place-self: center;
+}
+
+/* Change grid-column-start etc to grid-area*/
+
+/*
 .result-container{
   grid-column-start: 1;
   grid-column-end: 5;
@@ -51,5 +80,12 @@
   grid-row-end: 7;
   grid-column-start: 1;
   grid-column-end: 4;
-}
+} */
+
+
+
+
+
+
+
 
