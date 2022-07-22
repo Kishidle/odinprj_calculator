@@ -32,7 +32,7 @@
 
 }
 
-.result-container{
+#result-container{
   width: 90%;
   height: 80%;
   border: 1px solid black;
