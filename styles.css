@@ -26,15 +26,15 @@
   grid-template-rows: 25% repeat(5, 15%);
   grid-template-columns: repeat(4, 25%);
   width: 50%;
-  height: 750px;
-  border: 1px solid red;
+  height: 800px;
+  border: 5px solid red;
   border-radius: 10px;
 
 }
 
 #display-container{
   width: 90%;
-  height: 80%;
+  height: 60%;
   border: 1px solid black;
   grid-area: results;
   grid-area: 1 / 1 / 1 / 5;
