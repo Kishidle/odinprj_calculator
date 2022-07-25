@@ -1,4 +1,13 @@
 
+let operationObj = {
+  num1: 0,
+  num2: 0,
+  operation: "",
+  isSecond: false,
+}
+
+
+
 function add(x, y){
   return x + y;
 }
@@ -36,15 +45,80 @@ function operate(num1, num2, operation){
 /* 
   Code part for adding eventlisteners to the calculator buttons
   TODO: add saving of values to an Object
+  TODO: differentiate number buttons and function buttons
 */
-const buttons = document.querySelectorAll('.calculator-button');
+const buttons = document.querySelectorAll('.calculator-button:not(.function-button)');
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     let text = button.textContent;
-    let result = document.querySelector("#result-container");
+    let result = document.querySelector("#display-container");
 
     result.setAttribute("readonly", false);
     result.value += text;
+    result.setAttribute("readonly", true);
   });
+});
+
+const reset = document.getElementById("btnAC");
+reset.addEventListener("click", () => {
+
+  //resetting the operation object
+  operationObj.num1 = undefined;
+  operationObj.num2 = undefined;
+  operationObj.operation = undefined;
+  operationObj.isSecond = false;
+
+  //resetting the display
+
+  let display = document.querySelector("#display-container");
+  display.setAttribute("readonly", false);
+  display.value = "";
+  display.setAttribute("readonly", true);
+});
+
+const plus = document.getElementById("btnPlus");
+plus.addEventListener("click", () => {
+  let display = document.querySelector("#display-container");
+
+  
+
+  operationObj.operation = "+";
+  
+  if(operationObj.isSecond === true){
+    operationObj.isSecond = false;
+    operate(operationObj.num1, operationObj.num2, operationObj.operation); //convert to object so it's shorter?
+
+  }
+  else if(operationObj.isSecond === false){
+    operationObj.isSecond = true;
+    
+    operationObj.num1 = parseInt(display.value);
+
+  }
+
+  display.setAttribute("readonly", false);
+  display.value = "";
+  display.setAttribute("readonly", true);
+});
+
+
+const equals = document.getElementById("btnEqual");
+equals.addEventListener("click", () => {
+
+  
+  let display = document.querySelector("#display-container");
+  operationObj.num2 = parseInt(display.value);
+  /*if(operationObj.num1 !== undefined && operationObj.num2 !== undefined 
+    && operationObj.operation !== undefined){
+
+  }*/
+
+  let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
+
+  
+
+  display.setAttribute("readonly", false);
+  display.value = answer;
+  display.setAttribute("readonly", true);
 });
