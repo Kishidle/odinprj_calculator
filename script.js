@@ -1,8 +1,8 @@
 
 let operationObj = {
-  num1: 0,
-  num2: 0,
-  operation: "",
+  num1: undefined,
+  num2: undefined,
+  operation: undefined,
   isSecond: false,
 }
 
@@ -77,29 +77,30 @@ reset.addEventListener("click", () => {
   display.setAttribute("readonly", true);
 });
 
-const plus = document.getElementById("btnPlus");
-plus.addEventListener("click", () => {
-  let display = document.querySelector("#display-container");
+const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #btnPlus");
+operatorBtns.forEach((button) => {
+  button.addEventListener("click", () => {
 
-  
+    let display = document.querySelector("#display-container");
 
-  operationObj.operation = "+";
-  
-  if(operationObj.isSecond === true){
-    operationObj.isSecond = false;
-    operate(operationObj.num1, operationObj.num2, operationObj.operation); //convert to object so it's shorter?
-
-  }
-  else if(operationObj.isSecond === false){
-    operationObj.isSecond = true;
+    operationObj.operation = button.textContent;
     
-    operationObj.num1 = parseInt(display.value);
-
-  }
-
-  display.setAttribute("readonly", false);
-  display.value = "";
-  display.setAttribute("readonly", true);
+    if(operationObj.isSecond === true){
+      operationObj.isSecond = false;
+      operate(operationObj.num1, operationObj.num2, operationObj.operation); //convert to object so it's shorter?
+  
+    }
+    else if(operationObj.isSecond === false){
+      operationObj.isSecond = true;
+      
+      operationObj.num1 = parseInt(display.value);
+  
+    }
+  
+    display.setAttribute("readonly", false);
+    display.value = "";
+    display.setAttribute("readonly", true);
+  });
 });
 
 
@@ -116,7 +117,9 @@ equals.addEventListener("click", () => {
 
   let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
 
-  
+  operationObj.num1 = parseInt(answer);
+  operationObj.num2 = undefined;
+  operationObj.operation = undefined;
 
   display.setAttribute("readonly", false);
   display.value = answer;
