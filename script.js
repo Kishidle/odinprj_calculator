@@ -39,9 +39,19 @@ function operate(num1, num2, operation){
   
 }
 
+function resetCalc(){
+  operationObj.num1 = undefined;
+  operationObj.num2 = undefined;
+  operationObj.operation = undefined;
+  operationObj.isSecond = false;
 
+  let display = document.querySelector("#display-container");
+  display.setAttribute("readonly", false);
+  display.value = "0";
+  display.setAttribute("readonly", true);
+}
 
-
+resetCalc();
 /* 
   Code part for adding eventlisteners to the calculator buttons
   TODO: add saving of values to an Object
@@ -55,7 +65,13 @@ buttons.forEach((button) => {
     let result = document.querySelector("#display-container");
 
     result.setAttribute("readonly", false);
-    result.value += text;
+    if(result.value === "0"){
+      result.value = text;
+    }
+    else{
+      result.value += text;
+    }
+    
     result.setAttribute("readonly", true);
   });
 });
@@ -64,17 +80,11 @@ const reset = document.getElementById("btnAC");
 reset.addEventListener("click", () => {
 
   //resetting the operation object
-  operationObj.num1 = undefined;
-  operationObj.num2 = undefined;
-  operationObj.operation = undefined;
-  operationObj.isSecond = false;
+  resetCalc();
 
   //resetting the display
 
-  let display = document.querySelector("#display-container");
-  display.setAttribute("readonly", false);
-  display.value = "";
-  display.setAttribute("readonly", true);
+  
 });
 
 const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #btnPlus");
