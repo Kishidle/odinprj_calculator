@@ -32,7 +32,7 @@
 
 }
 
-#result-container{
+#display-container{
   width: 90%;
   height: 80%;
   border: 1px solid black;
@@ -52,6 +52,10 @@
   height: 90%;
   
   place-self: center;
+}
+
+.function-button{
+  background-color: gold;
 }
 
 /* Change grid-column-start etc to grid-area*/
