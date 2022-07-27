@@ -36,7 +36,15 @@ function operate(num1, num2, operation){
     case '*':
       return multiply(num1, num2); break;
     case '/':
-      return divide(num1, num2); break;
+      if(num1 === 0 || num2 === 0){
+        alert("Hey, you can't divide by 0!");
+        resetCalc(); 
+      }
+      else{
+        return divide(num1, num2);
+      }
+      break;
+      
   }
   
 }
@@ -100,7 +108,7 @@ operatorBtns.forEach((button) => {
     if(operationObj.isSecond === true && !repeat){
       operationObj.isSecond = false;
       operate(operationObj.num1, operationObj.num2, operationObj.operation); //convert to object so it's shorter?
-  
+      //doesn't actually display anything here, fix
     }
     else if(operationObj.isSecond === false || repeat){
 
@@ -124,12 +132,12 @@ equals.addEventListener("click", () => {
   }*/
 
   let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
-
-  operationObj.num1 = parseInt(answer);
+  let rounded = Math.round(answer * 100) / 100;
+  operationObj.num1 = parseInt(rounded);
   operationObj.num2 = undefined;
   operationObj.operation = undefined;
 
   display.setAttribute("readonly", false);
-  display.value = answer;
+  display.value = rounded;
   display.setAttribute("readonly", true);
 });
