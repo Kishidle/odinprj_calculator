@@ -4,10 +4,12 @@ let operationObj = {
   num2: undefined,
   operation: undefined,
   isSecond: false,
+  prevResult : undefined,
 }
-
 let repeat = 0;
 let erase = true;
+let isOperatorPressed = false;
+let isEqualPressed = false;
 
 let display = document.querySelector("#display-container");
 function add(x, y){
@@ -28,6 +30,8 @@ function divide(x, y){
 
 function operate(num1, num2, operation){
   
+  num1 = parseInt(num1);
+  num2 = parseInt(num2);
   switch(operation){
     case '+':
       return add(num1, num2); break;
@@ -61,6 +65,7 @@ const buttons = document.querySelectorAll('.calculator-button:not(.function-butt
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    
     let text = button.textContent;
     
     repeat = 0;
@@ -68,10 +73,18 @@ buttons.forEach((button) => {
     display.setAttribute("readonly", false);
     if(display.value === "0" || erase){
       display.value = text;
+      if(!isOperatorPressed){
+        operationObj.num1 = text;
+      }
+      else operationObj.num2 = text;
       erase = false;
     }
     else{
       display.value += text;
+      if(!isOperatorPressed){
+        operationObj.num1 += text;
+      }
+      else operationObj.num2 += text;
     }
     
     display.setAttribute("readonly", true);
@@ -93,10 +106,28 @@ const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #b
 operatorBtns.forEach((button) => {
   button.addEventListener("click", () => {
 
-    repeat = 1;
     erase = true;
+    if(operationObj.operation !== undefined && operationObj.num1 !== undefined 
+      && operationObj.num2 !== undefined){
+
+        //add a displayAnswer function
+        let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
+        display.setAttribute("readonly", false);
+        display.value = parseFloat(answer);
+        display.setAttribute("readonly", true);
+
+        operationObj.num1 = answer;
+        operationObj.num2 = undefined;
+        operationObj.operation = undefined;
+    }
+    
     operationObj.operation = button.textContent;
     
+    isOperatorPressed = true;
+
+    
+
+    /*
     if(operationObj.isSecond === true && !repeat){
       operationObj.isSecond = false;
       operate(operationObj.num1, operationObj.num2, operationObj.operation); //convert to object so it's shorter?
@@ -107,7 +138,7 @@ operatorBtns.forEach((button) => {
       operationObj.isSecond = true;
       operationObj.num1 = parseInt(display.value);
   
-    }
+    }*/
   
   });
 });
@@ -116,12 +147,31 @@ operatorBtns.forEach((button) => {
 const equals = document.getElementById("btnEqual");
 equals.addEventListener("click", () => {
 
+
+  if(operationObj.num1 !== undefined && operationObj.num2 !== undefined){
+    let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
+
+
+    display.setAttribute("readonly", false);
+    display.value = parseFloat(answer);
+    display.setAttribute("readonly", true);
+
+    operationObj.num1 = answer;
+    operationObj.num2 = undefined;
+    operationObj.operation = undefined;
+
+    erase = true;
+    isOperatorPressed = false;
+  }
+
   
+  /*
+  isEqualPressed = true;
   operationObj.num2 = parseInt(display.value);
-  /*if(operationObj.num1 !== undefined && operationObj.num2 !== undefined 
+  if(operationObj.num1 !== undefined && operationObj.num2 !== undefined 
     && operationObj.operation !== undefined){
 
-  }*/
+  }
 
   let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
 
@@ -132,4 +182,5 @@ equals.addEventListener("click", () => {
   display.setAttribute("readonly", false);
   display.value = answer;
   display.setAttribute("readonly", true);
+  */
 });
