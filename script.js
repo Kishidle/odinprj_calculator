@@ -4,7 +4,8 @@ let operationObj = {
   num2: undefined,
   operation: undefined,
   isSecond: false,
-  prevResult : undefined,
+  prevNum : undefined,
+  prevOperation: undefined,
 }
 let repeat = 0;
 let erase = true;
@@ -144,15 +145,33 @@ equals.addEventListener("click", () => {
 
 
   if(operationObj.num1 !== undefined && operationObj.num2 !== undefined){
+
     let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
+
 
     display.setAttribute("readonly", false);
     display.value = parseFloat(answer);
     display.setAttribute("readonly", true);
 
     operationObj.num1 = answer;
+    operationObj.prevNum = operationObj.num2;
+    operationObj.prevOperation = operationObj.operation;
     operationObj.num2 = undefined;
     operationObj.operation = undefined;
+
+    erase = true;
+    isOperatorPressed = false;
+  }
+  else if(operationObj.prevNum !== undefined){
+
+
+    let answer = operate(operationObj.num1, operationObj.prevNum, operationObj.prevOperation);
+
+    display.setAttribute("readonly", false);
+    display.value = parseFloat(answer);
+    display.setAttribute("readonly", true);
+
+    operationObj.num1 = answer;
 
     erase = true;
     isOperatorPressed = false;
