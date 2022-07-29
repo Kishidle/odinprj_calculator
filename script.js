@@ -8,7 +8,7 @@ let operationObj = {
 
 let repeat = 0;
 let erase = true;
-
+let isDecimalFirst = true;
 let display = document.querySelector("#display-container");
 function add(x, y){
   return x + y;
@@ -71,14 +71,22 @@ buttons.forEach((button) => {
   button.addEventListener("click", () => {
     let text = button.textContent;
     
+    //for decimal, check if first button to be pressed
     repeat = 0;
 
     display.setAttribute("readonly", false);
     if(display.value === "0" || erase){
-      display.value = text;
+      if(isDecimalFirst === true && text === "."){
+        display.value += text;
+        isDecimalFirst = false;
+      }
+      else{
+        display.value = text;
+      }
       erase = false;
     }
     else{
+      isDecimalFirst = false;
       display.value += text;
     }
     
@@ -113,7 +121,7 @@ operatorBtns.forEach((button) => {
     else if(operationObj.isSecond === false || repeat){
 
       operationObj.isSecond = true;
-      operationObj.num1 = parseInt(display.value);
+      operationObj.num1 = parseFloat(display.value);
   
     }
   
@@ -124,8 +132,11 @@ operatorBtns.forEach((button) => {
 const equals = document.getElementById("btnEqual");
 equals.addEventListener("click", () => {
 
+  //for multiple presses of equals
+  if(operationObj.num2 === undefined){
+    operationObj.num2 = parseFloat(display.value);
+  }
   
-  operationObj.num2 = parseInt(display.value);
   /*if(operationObj.num1 !== undefined && operationObj.num2 !== undefined 
     && operationObj.operation !== undefined){
 
@@ -133,9 +144,9 @@ equals.addEventListener("click", () => {
 
   let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
   let rounded = Math.round(answer * 100) / 100;
-  operationObj.num1 = parseInt(rounded);
-  operationObj.num2 = undefined;
-  operationObj.operation = undefined;
+  operationObj.num1 = parseFloat(rounded);
+  //operationObj.num2 = undefined;
+  //operationObj.operation = undefined;
 
   display.setAttribute("readonly", false);
   display.value = rounded;
