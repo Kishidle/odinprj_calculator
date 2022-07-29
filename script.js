@@ -124,21 +124,6 @@ operatorBtns.forEach((button) => {
     operationObj.operation = button.textContent;
     
     isOperatorPressed = true;
-
-    
-
-    /*
-    if(operationObj.isSecond === true && !repeat){
-      operationObj.isSecond = false;
-      operate(operationObj.num1, operationObj.num2, operationObj.operation); //convert to object so it's shorter?
-  
-    }
-    else if(operationObj.isSecond === false || repeat){
-
-      operationObj.isSecond = true;
-      operationObj.num1 = parseInt(display.value);
-  
-    }*/
   
   });
 });
@@ -163,24 +148,4 @@ equals.addEventListener("click", () => {
     erase = true;
     isOperatorPressed = false;
   }
-
-  
-  /*
-  isEqualPressed = true;
-  operationObj.num2 = parseInt(display.value);
-  if(operationObj.num1 !== undefined && operationObj.num2 !== undefined 
-    && operationObj.operation !== undefined){
-
-  }
-
-  let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
-
-  operationObj.num1 = parseInt(answer);
-  operationObj.num2 = undefined;
-  operationObj.operation = undefined;
-
-  display.setAttribute("readonly", false);
-  display.value = answer;
-  display.setAttribute("readonly", true);
-  */
 });
