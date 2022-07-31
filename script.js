@@ -206,3 +206,23 @@ equals.addEventListener("click", () => {
   isDecimalPressed = false;
   isDecimalFirst = true;
 });
+
+document.addEventListener('keydown', (e) => {
+
+  let operands = {
+    '+' : 'Plus',
+    '-' : 'Minus',
+    '/' : 'Div',
+    '*' : 'Mult',
+    '%' : 'Mod',
+  }
+
+  //e.preventDefault();
+
+  if((e.key === '+' || e.key === '-' || e.key === '/' || e.key ==='*' || e.key ==='%') && e.shiftKey){
+    document.getElementById(`btn${operands[e.key]}`).click();
+  }
+  if(e.key === 'Backspace' || e.key === 'Delete'){
+    document.getElementById("btnAC").click();
+  }
+});
