@@ -11,7 +11,8 @@ let repeat = 0;
 let erase = true;
 let isOperatorPressed = false;
 let isEqualPressed = false;
-
+let isDecimalFirst = true;
+let isDecimalPressed = false;
 let display = document.querySelector("#display-container");
 function add(x, y){
   return x + y;
@@ -31,8 +32,8 @@ function divide(x, y){
 
 function operate(num1, num2, operation){
   
-  num1 = parseInt(num1);
-  num2 = parseInt(num2);
+  num1 = parseFloat(num1);
+  num2 = parseFloat(num2);
   switch(operation){
     case '+':
       return add(num1, num2); break;
@@ -79,26 +80,49 @@ buttons.forEach((button) => {
     
     //for decimal, check if first button to be pressed
     repeat = 0;
-
-    display.setAttribute("readonly", false);
-    if(display.value === "0" || erase){
-      display.value = text;
-      if(!isOperatorPressed){
-        operationObj.num1 = text;
+    //checking if decimal has already been pressed
+    if(!isDecimalPressed || text !== "."){
+      display.setAttribute("readonly", false);
+      if(display.value === "0" || erase){
+      //checking if decimal is pressed first before any buttons so it adds a decimal to default value of 0
+        if(isDecimalFirst === true && text === "."){ 
+          isDecimalPressed = true;
+          display.value = "0";        
+          display.value += text;
+          if(!isOperatorPressed){
+            operationObj.num1 = 0;
+            operationObj.num1 += text;
+          }
+          else{
+            operationObj.num2 = 0;
+            operationObj.num2 += text;
+          } 
+        }
+        else{
+          display.value = text;
+          if(!isOperatorPressed){
+            operationObj.num1 = text;
+          }
+          else operationObj.num2 = text;
+        }
+      
+        erase = false;
       }
-      else operationObj.num2 = text;
-      erase = false;
-    }
-    else{
-      isDecimalFirst = false;
-      display.value += text;
-      if(!isOperatorPressed){
-        operationObj.num1 += text;
-      }
-      else operationObj.num2 += text;
+      else{
+        isDecimalFirst = false;
+        if(text === "."){
+          isDecimalPressed = true;
+        }
+        display.value += text;
+        if(!isOperatorPressed){
+          operationObj.num1 += text;
+        }
+        else operationObj.num2 += text;
+      } 
+    
+      display.setAttribute("readonly", true);
     }
     
-    display.setAttribute("readonly", true);
   });
 });
 
@@ -135,6 +159,8 @@ operatorBtns.forEach((button) => {
     operationObj.operation = button.textContent;
     
     isOperatorPressed = true;
+    isDecimalPressed = false;
+    isDecimalFirst = true;
   
   });
 });
@@ -176,4 +202,6 @@ equals.addEventListener("click", () => {
     erase = true;
     isOperatorPressed = false;
   }
+  isDecimalPressed = false;
+  isDecimalFirst = true;
 });
