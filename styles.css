@@ -47,6 +47,10 @@
   width: 76%;
   grid-area: 6 / 1 / 6 / 3;
 }
+#btnAC{
+  width: 76%;
+  grid-area: 2 / 1 / 2 / 3;
+}
 .calculator-button{
   width: 50%;
   height: 90%;

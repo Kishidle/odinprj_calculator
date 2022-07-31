@@ -66,6 +66,7 @@ function resetCalc(){
   display.setAttribute("readonly", true);
 }
 
+//TODO AUGUST 1: prune text length to not exceed some length, or code it so that the font size goes
 resetCalc();
 /* 
   Code part for adding eventlisteners to the calculator buttons
