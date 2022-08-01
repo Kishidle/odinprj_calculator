@@ -13,6 +13,7 @@ let isEqualPressed = false;
 let isDecimalFirst = true;
 let isDecimalPressed = false;
 let display = document.querySelector("#display-container");
+
 function add(x, y){
   return x + y;
 }
@@ -54,22 +55,44 @@ function operate(num1, num2, operation){
   
 }
 
+/*
+  Resets the calculator to its initial state
+*/
 function resetCalc(){
   operationObj.num1 = undefined;
   operationObj.num2 = undefined;
   operationObj.operation = undefined;
 
-  display.setAttribute("readonly", false);
   display.value = "0";
-  display.setAttribute("readonly", true);
 }
 
+/*
+  Calls the operate function and then displays the answer to the calculator
+*/
 function calculateResult(){
-  let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
-  display.setAttribute("readonly", false);
+  let answer = "";
+  if(operationObj.prevNum !== undefined && operationObj.num2 === undefined){
+    answer = operate(operationObj.num1, operationObj.prevNum, operationObj.prevOperation);
+  }
+  else{
+    answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
+  }
+  
   display.value = parseFloat(answer);
-  display.setAttribute("readonly", true);
   return answer;
+}
+
+
+/*
+  Puts the current display value to the operationObj's num1 or num2, depending if an operator is pressed already or not.
+*/
+function displayToVar(){
+  if(!isOperatorPressed){
+    operationObj.num1 = display.value;
+  }
+  else{
+    operationObj.num2 = display.value;
+  } 
 }
 
 //TODO AUGUST 1: prune text length to not exceed some length, or code it so that the font size goes
@@ -84,31 +107,22 @@ buttons.forEach((button) => {
   button.addEventListener("click", () => {
     
     let text = button.textContent;
-    
-    //for decimal, check if first button to be pressed
-    repeat = 0;
+
     //checking if decimal has already been pressed
     if(!isDecimalPressed || text !== "."){
-      display.setAttribute("readonly", false);
+    
       if(display.value === "0" || erase){
       //checking if decimal is pressed first before any buttons so it adds a decimal to default value of 0
         if(isDecimalFirst === true && text === "."){ 
           isDecimalPressed = true;
           display.value = "0";        
           display.value += text;
-          if(!isOperatorPressed){
-            operationObj.num1 = display.value;
-          }
-          else{
-            operationObj.num2 = display.value;
-          } 
+          displayToVar();
         }
         else{
           display.value = text;
-          if(!isOperatorPressed){
-            operationObj.num1 = display.value;
-          }
-          else operationObj.num2 = display.value;
+          
+          displayToVar();
         }
       
         erase = false;
@@ -119,13 +133,10 @@ buttons.forEach((button) => {
           isDecimalPressed = true;
         }
         display.value += text;
-        if(!isOperatorPressed){
-          operationObj.num1 = display.value;
-        }
-        else operationObj.num2 = display.value;
+        displayToVar();
       } 
     
-      display.setAttribute("readonly", true);
+      
     }
     
   });
@@ -210,9 +221,9 @@ document.addEventListener('keydown', (e) => {
 
 
 
-  //e.preventDefault();
+  //e.preventDefault();5
 
-  if((e.key === '+' || e.key === '-' || e.key === '/' || e.key ==='*' || e.key ==='%') && e.shiftKey){
+  if((e.key === '+' || e.key === '-' || e.key === '/' || e.key ==='*' || e.key ==='%')){
     document.getElementById(`btn${operands[e.key]}`).click();
   }
   if(e.key === 'Delete'){
@@ -242,6 +253,9 @@ document.addEventListener('keydown', (e) => {
   }
   if(e.key > 0 || e.key <=9){
     document.getElementById(`btn${e.key}`).click();
+  }
+  if(e.key === '.'){
+    document.getElementById('btnDeci').click();
   }
   if(e.key === 'Enter'){
     document.getElementById('btnEqual').click();
