@@ -12,7 +12,7 @@ let isOperatorPressed = false;
 let isEqualPressed = false;
 let isDecimalFirst = true;
 let isDecimalPressed = false;
-let display = document.querySelector("#display-container");
+let display = document.querySelector(".result");
 
 function add(x, y){
   return x + y;
@@ -84,7 +84,7 @@ function calculateResult(){
     answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
   }
   
-  display.value = parseFloat(answer);
+  display.textContent = parseFloat(answer);
   return answer;
 }
 
@@ -94,10 +94,10 @@ function calculateResult(){
 */
 function displayToVar(){
   if(!isOperatorPressed){
-    operationObj.num1 = display.value;
+    operationObj.num1 = display.textContent;
   }
   else{
-    operationObj.num2 = display.value;
+    operationObj.num2 = display.textContent;
   } 
 }
 
@@ -121,12 +121,12 @@ buttons.forEach((button) => {
       //checking if decimal is pressed first before any buttons so it adds a decimal to default value of 0
         if(isDecimalFirst === true && text === "."){ 
           isDecimalPressed = true;
-          display.value = "0";        
-          display.value += text;
+          display.textContent = "0";        
+          display.textContent += text;
           displayToVar();
         }
         else{
-          display.value = text;
+          display.textContent = text;
           
           displayToVar();
         }
@@ -138,7 +138,7 @@ buttons.forEach((button) => {
         if(text === "."){
           isDecimalPressed = true;
         }
-        display.value += text;
+        display.textContent += text;
         displayToVar();
       } 
     
@@ -244,10 +244,10 @@ document.addEventListener('keydown', (e) => {
       isDecimalPressed = false;
     }
     if(str.length === 1){
-      display.value = "0";
+      display.textContent = "0";
     }
     else if(str.length > 1){
-      display.value = str.slice(0, -1);
+      display.textContent = str.slice(0, -1);
     }
     
     displayToVar();
