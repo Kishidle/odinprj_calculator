@@ -3,7 +3,6 @@ let operationObj = {
   num1: undefined,
   num2: undefined,
   operation: undefined,
-  isSecond: false,
   prevNum : undefined,
   prevOperation: undefined,
 }
@@ -59,7 +58,6 @@ function resetCalc(){
   operationObj.num1 = undefined;
   operationObj.num2 = undefined;
   operationObj.operation = undefined;
-  operationObj.isSecond = false;
 
   display.setAttribute("readonly", false);
   display.value = "0";
