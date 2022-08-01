@@ -66,6 +66,14 @@ function resetCalc(){
   display.setAttribute("readonly", true);
 }
 
+function calculateResult(){
+  let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
+  display.setAttribute("readonly", false);
+  display.value = parseFloat(answer);
+  display.setAttribute("readonly", true);
+  return answer;
+}
+
 //TODO AUGUST 1: prune text length to not exceed some length, or code it so that the font size goes
 resetCalc();
 /* 
@@ -91,20 +99,18 @@ buttons.forEach((button) => {
           display.value = "0";        
           display.value += text;
           if(!isOperatorPressed){
-            operationObj.num1 = 0;
-            operationObj.num1 += text;
+            operationObj.num1 = display.value;
           }
           else{
-            operationObj.num2 = 0;
-            operationObj.num2 += text;
+            operationObj.num2 = display.value;
           } 
         }
         else{
           display.value = text;
           if(!isOperatorPressed){
-            operationObj.num1 = text;
+            operationObj.num1 = display.value;
           }
-          else operationObj.num2 = text;
+          else operationObj.num2 = display.value;
         }
       
         erase = false;
@@ -116,9 +122,9 @@ buttons.forEach((button) => {
         }
         display.value += text;
         if(!isOperatorPressed){
-          operationObj.num1 += text;
+          operationObj.num1 = display.value;
         }
-        else operationObj.num2 += text;
+        else operationObj.num2 = display.value;
       } 
     
       display.setAttribute("readonly", true);
@@ -147,10 +153,7 @@ operatorBtns.forEach((button) => {
       && operationObj.num2 !== undefined){
 
         //add a displayAnswer function
-        let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
-        display.setAttribute("readonly", false);
-        display.value = parseFloat(answer);
-        display.setAttribute("readonly", true);
+        let answer = calculateResult();
 
         operationObj.num1 = answer;
         operationObj.num2 = undefined;
@@ -173,12 +176,8 @@ equals.addEventListener("click", () => {
 
   if(operationObj.num1 !== undefined && operationObj.num2 !== undefined){
 
-    let answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
-
-
-    display.setAttribute("readonly", false);
-    display.value = parseFloat(answer);
-    display.setAttribute("readonly", true);
+    
+    let answer = calculateResult();
 
     operationObj.num1 = answer;
     operationObj.prevNum = operationObj.num2;
@@ -191,13 +190,7 @@ equals.addEventListener("click", () => {
   }
   else if(operationObj.prevNum !== undefined){
 
-
-    let answer = operate(operationObj.num1, operationObj.prevNum, operationObj.prevOperation);
-
-    display.setAttribute("readonly", false);
-    display.value = parseFloat(answer);
-    display.setAttribute("readonly", true);
-
+    let answer = calculateResult();
     operationObj.num1 = answer;
 
     erase = true;
@@ -217,12 +210,42 @@ document.addEventListener('keydown', (e) => {
     '%' : 'Mod',
   }
 
+
+
   //e.preventDefault();
 
   if((e.key === '+' || e.key === '-' || e.key === '/' || e.key ==='*' || e.key ==='%') && e.shiftKey){
     document.getElementById(`btn${operands[e.key]}`).click();
   }
-  if(e.key === 'Backspace' || e.key === 'Delete'){
+  if(e.key === 'Delete'){
     document.getElementById("btnAC").click();
+  }
+  if(e.key === 'Backspace'){
+
+    
+    let str = display.value;
+
+    if(str.charAt(str.length - 1) === '.'){
+      isDecimalPressed = false;
+    }
+    if(str.length === 1){
+      display.value = "0";
+    }
+    else if(str.length > 1){
+      display.value = str.slice(0, -1);
+    }
+    
+    if(!isOperatorPressed){
+      operationObj.num1 = display.value;
+    }
+    else if(isOperatorPressed){
+      operationObj.num2 = display.value;
+    }
+  }
+  if(e.key > 0 || e.key <=9){
+    document.getElementById(`btn${e.key}`).click();
+  }
+  if(e.key === 'Enter'){
+    document.getElementById('btnEqual').click();
   }
 });
