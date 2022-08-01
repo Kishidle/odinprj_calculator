@@ -250,12 +250,7 @@ document.addEventListener('keydown', (e) => {
       display.value = str.slice(0, -1);
     }
     
-    if(!isOperatorPressed){
-      operationObj.num1 = display.value;
-    }
-    else if(isOperatorPressed){
-      operationObj.num2 = display.value;
-    }
+    displayToVar();
   }
   if(e.key > 0 || e.key <=9){
     document.getElementById(`btn${e.key}`).click();
