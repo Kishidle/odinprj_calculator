@@ -30,6 +30,10 @@ function divide(x, y){
   return x / y;
 }
 
+function modulo(x, y){
+  return x % y;
+}
+
 function operate(num1, num2, operation){
   
   num1 = parseFloat(num1);
@@ -50,7 +54,9 @@ function operate(num1, num2, operation){
         return divide(num1, num2);
       }
       break;
-      
+    case '%':
+      return modulo(num1, num2); break;
+
   }
   
 }
