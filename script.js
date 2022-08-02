@@ -63,7 +63,6 @@ function operate(num1, num2, operation){
   }
   
 }
-
 /*
   Resets the calculator to its initial state
 */
@@ -74,7 +73,6 @@ function resetCalc(){
 
   display.value = "0";
 }
-
 /*
   Calls the operate function and then displays the answer to the calculator
 */
@@ -90,8 +88,6 @@ function calculateResult(){
   display.textContent = parseFloat(answer);
   return answer;
 }
-
-
 /*
   Puts the current display value to the operationObj's num1 or num2, depending if an operator is pressed already or not.
 */
@@ -103,19 +99,13 @@ function displayToVar(){
     operationObj.num2 = display.textContent;
   } 
 }
-
-//TODO AUGUST 1: prune text length to not exceed some length, or code it so that the font size goes
-resetCalc();
-/* 
-  Code part for adding eventlisteners to the calculator buttons
-  TODO: copy Windows-style calculator where the operating string is on top of the result display
+/*
+  Button handler for the numerical buttons on the calculator and the decimal ('.') button.
+  Handles assignment of values to the result and history displays, plus sends 
+  the values to another function for assignment to the operation Object.
 */
-const buttons = document.querySelectorAll('.calculator-button:not(.function-button)');
-
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    
-    let text = button.textContent;
+function buttonHandler(){
+  let text = button.textContent;
     //checking if decimal has already been pressed
     if(!isDecimalPressed || text !== "."){
     
@@ -126,11 +116,13 @@ buttons.forEach((button) => {
           display.textContent = "0";        
           display.textContent += text;
 
+          historyString = display.textContent;
           displayToVar();
         }
         else{
+          //erases the current display and starts a new number
           display.textContent = text;
-          
+          historyString += text;
           displayToVar();
         }
       
@@ -142,62 +134,45 @@ buttons.forEach((button) => {
           isDecimalPressed = true;
         }
         display.textContent += text;
-        
+        historyString += text;
         displayToVar();
       } 
-    
+    }
+}
+/*
+  Handler for the operand buttons on the calculator. Calls for calculate result if it detects that a previous operand
+  has been selected, otherwise just sets the operand to the operation Object variable.
+  Also handles concatenating the operand to the history string.
+*/
+function operatorHandler(){
+  erase = true;
+  /*
+    This portion of the code is for calculating the answer if the user only keeps on pressing operands instead of equals  
+  */
+  if(operationObj.operation !== undefined && operationObj.num1 !== undefined 
+    && operationObj.num2 !== undefined){
+
       
-    }
-    
-  });
-});
+      let answer = calculateResult();
 
-const reset = document.getElementById("btnAC");
-reset.addEventListener("click", () => {
-
-  //resetting the operation object
-  resetCalc();
-
-  //resetting the display
-
+      operationObj.num1 = answer;
+      operationObj.num2 = undefined;
+      operationObj.operation = undefined;
+  }
+  historyString += ` ${button.textContent}`;
+  history.textContent = historyString;
+  operationObj.operation = button.textContent;
   
-});
-
-const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #btnPlus");
-operatorBtns.forEach((button) => {
-  button.addEventListener("click", () => {
-
-    erase = true;
-    if(operationObj.operation !== undefined && operationObj.num1 !== undefined 
-      && operationObj.num2 !== undefined){
-
-        //add a displayAnswer function
-        let answer = calculateResult();
-
-        operationObj.num1 = answer;
-        operationObj.num2 = undefined;
-        operationObj.operation = undefined;
-    }
-    
-    operationObj.operation = button.textContent;
-    
-    
-    
-    isOperatorPressed = true;
-    isDecimalPressed = false;
-    isDecimalFirst = true;
-  
-  });
-});
-
-
-const equals = document.getElementById("btnEqual");
-equals.addEventListener("click", () => {
-
-
+  isOperatorPressed = true;
+  isDecimalPressed = false;
+  isDecimalFirst = true;
+}
+/*
+  Handler for the 'Equals' event when the equals button is pressed. 
+  Calls calculateResult() and changes operationObj values depending on state.
+*/
+function equalHandler(){
   if(operationObj.num1 !== undefined && operationObj.num2 !== undefined){
-
-
     let answer = calculateResult();
 
     operationObj.num1 = answer;
@@ -209,6 +184,8 @@ equals.addEventListener("click", () => {
     erase = true;
     isOperatorPressed = false;
   }
+  
+  // Functionality for pressing equals multiple times after getting an answer. Will just repeat the current operand and current 2nd number. 
   else if(operationObj.prevNum !== undefined){
 
     let answer = calculateResult();
@@ -218,13 +195,43 @@ equals.addEventListener("click", () => {
     isOperatorPressed = false;
   }
 
-  
   isDecimalPressed = false;
   isDecimalFirst = true;
+}
+resetCalc();
+const buttons = document.querySelectorAll('.calculator-button:not(.function-button)');
+
+//Event listeners for the buttons on the calculator
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    buttonHandler();
+  });
 });
 
-document.addEventListener('keydown', (e) => {
+const reset = document.getElementById("btnAC");
+reset.addEventListener("click", () => {
+  resetCalc();
+});
 
+
+const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #btnPlus");
+operatorBtns.forEach((button) => {
+  button.addEventListener("click", () => {
+    operatorHandler();
+  });
+});
+
+
+const equals = document.getElementById("btnEqual");
+equals.addEventListener("click", () => {
+
+  equalHandler();
+});
+
+/*
+  Keyboard event listener functionality. Will call click() on the corresponding buttons, plus adds functionality for 'Backspace'.
+*/
+document.addEventListener('keydown', (e) => {
   let operands = {
     '+' : 'Plus',
     '-' : 'Minus',
@@ -232,11 +239,6 @@ document.addEventListener('keydown', (e) => {
     '*' : 'Mult',
     '%' : 'Mod',
   }
-
-
-
-  //e.preventDefault();5
-
   if((e.key === '+' || e.key === '-' || e.key === '/' || e.key ==='*' || e.key ==='%')){
     document.getElementById(`btn${operands[e.key]}`).click();
   }
@@ -245,7 +247,6 @@ document.addEventListener('keydown', (e) => {
   }
   if(e.key === 'Backspace'){
 
-    
     let str = display.value;
 
     if(str.charAt(str.length - 1) === '.'){
