@@ -2,9 +2,12 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
-
-.header, .footer{
+body{
+  background-color: gray;
+}
+.header{
   width: 100%;
   height: 100px;
   display: flex;
@@ -19,30 +22,31 @@
 }
 
 
-
-
 .calculator-ui{
   display: grid;
-  grid-template-rows: 25% repeat(5, 15%);
+  grid-template-rows: 25% repeat(5, 13%) 10%;
   grid-template-columns: repeat(4, 25%);
   width: 30%;
   height: 800px;
-  border: 5px solid red;
+  border: 5px solid black;
   border-radius: 10px;
-
+  background-color: lightgray;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
 .display-container{
   display: flex;
-  width: 90%;
+  width: 93%;
   height: 60%;
   border: 1px solid black;
+  border-radius: 2px;
   grid-area: results;
   grid-area: 1 / 1 / 1 / 5;
   place-self: center;
   text-align: right;
   flex-wrap: wrap;
   padding: 5px;
+  background-color: white;
 }
 
 .history{
@@ -51,23 +55,36 @@
   font-size: 30px;
 }
 .result{
+  
   font-size: 70px;
   width: 100%;
   height: 70%;
 }
 
+.created-by{
+  width: 100%;
+  grid-area: 7 / 1 / 7 / 5;
+  font-size: 1.5em;
+  place-self: center;
+  text-align: center;
+  
+}
+
+.created-by a:link{
+  text-decoration: none;
+}
 #btn0{
-  width: 76%;
+  width: 87%;
   grid-area: 6 / 1 / 6 / 3;
 }
 #btnAC{
-  width: 76%;
+  width: 87%;
   grid-area: 2 / 1 / 2 / 3;
 }
 .calculator-button{
-  width: 50%;
+  width: 75%;
   height: 90%;
-  
+  font-size: 2em;
   place-self: center;
 }
 

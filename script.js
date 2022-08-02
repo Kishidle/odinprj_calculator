@@ -199,9 +199,9 @@ function equalHandler(){
   isDecimalFirst = true;
 }
 resetCalc();
-const buttons = document.querySelectorAll('.calculator-button:not(.function-button)');
 
 //Event listeners for the buttons on the calculator
+const buttons = document.querySelectorAll('.calculator-button:not(.function-button)');
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     buttonHandler();
@@ -213,7 +213,6 @@ reset.addEventListener("click", () => {
   resetCalc();
 });
 
-
 const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #btnPlus");
 operatorBtns.forEach((button) => {
   button.addEventListener("click", () => {
@@ -221,10 +220,8 @@ operatorBtns.forEach((button) => {
   });
 });
 
-
 const equals = document.getElementById("btnEqual");
 equals.addEventListener("click", () => {
-
   equalHandler();
 });
 
