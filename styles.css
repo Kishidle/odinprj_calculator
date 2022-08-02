@@ -42,14 +42,16 @@
   place-self: center;
   text-align: right;
   flex-wrap: wrap;
+  padding: 5px;
 }
 
 .history{
   width: 100%;
   height: 30%;
+  font-size: 30px;
 }
 .result{
-  font-size: 68px;
+  font-size: 70px;
   width: 100%;
   height: 70%;
 }

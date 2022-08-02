@@ -13,6 +13,9 @@ let isEqualPressed = false;
 let isDecimalFirst = true;
 let isDecimalPressed = false;
 let display = document.querySelector(".result");
+let history = document.querySelector(".history");
+let historyString = "";
+let historyReset = false;
 
 function add(x, y){
   return x + y;
@@ -83,7 +86,7 @@ function calculateResult(){
   else{
     answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
   }
-  
+
   display.textContent = parseFloat(answer);
   return answer;
 }
@@ -113,16 +116,16 @@ buttons.forEach((button) => {
   button.addEventListener("click", () => {
     
     let text = button.textContent;
-
     //checking if decimal has already been pressed
     if(!isDecimalPressed || text !== "."){
     
-      if(display.value === "0" || erase){
+      if(display.textContent === "0" || erase){
       //checking if decimal is pressed first before any buttons so it adds a decimal to default value of 0
         if(isDecimalFirst === true && text === "."){ 
           isDecimalPressed = true;
           display.textContent = "0";        
           display.textContent += text;
+
           displayToVar();
         }
         else{
@@ -139,6 +142,7 @@ buttons.forEach((button) => {
           isDecimalPressed = true;
         }
         display.textContent += text;
+        
         displayToVar();
       } 
     
@@ -177,6 +181,8 @@ operatorBtns.forEach((button) => {
     
     operationObj.operation = button.textContent;
     
+    
+    
     isOperatorPressed = true;
     isDecimalPressed = false;
     isDecimalFirst = true;
@@ -191,7 +197,7 @@ equals.addEventListener("click", () => {
 
   if(operationObj.num1 !== undefined && operationObj.num2 !== undefined){
 
-    
+
     let answer = calculateResult();
 
     operationObj.num1 = answer;
@@ -211,6 +217,8 @@ equals.addEventListener("click", () => {
     erase = true;
     isOperatorPressed = false;
   }
+
+  
   isDecimalPressed = false;
   isDecimalFirst = true;
 });
