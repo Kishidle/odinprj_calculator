@@ -14,7 +14,7 @@ let isDecimalFirst = true;
 let isDecimalPressed = false;
 let display = document.querySelector(".result");
 let history = document.querySelector(".history");
-let historyString = "";
+let historyString = new Array("","","","");
 let historyReset = false;
 
 function add(x, y){
@@ -94,9 +94,11 @@ function calculateResult(){
 function displayToVar(){
   if(!isOperatorPressed){
     operationObj.num1 = display.textContent;
+    historyString[0] = display.textContent;
   }
   else{
     operationObj.num2 = display.textContent;
+    historyString[2] = display.textContent;
   } 
 }
 /*
@@ -104,7 +106,7 @@ function displayToVar(){
   Handles assignment of values to the result and history displays, plus sends 
   the values to another function for assignment to the operation Object.
 */
-function buttonHandler(){
+function buttonHandler(button){
   let text = button.textContent;
     //checking if decimal has already been pressed
     if(!isDecimalPressed || text !== "."){
@@ -116,13 +118,13 @@ function buttonHandler(){
           display.textContent = "0";        
           display.textContent += text;
 
-          historyString = display.textContent;
+          //historyString = display.textContent;
           displayToVar();
         }
         else{
           //erases the current display and starts a new number
           display.textContent = text;
-          historyString += text;
+          //historyString += text;
           displayToVar();
         }
       
@@ -134,7 +136,7 @@ function buttonHandler(){
           isDecimalPressed = true;
         }
         display.textContent += text;
-        historyString += text;
+        //historyString += text;
         displayToVar();
       } 
     }
@@ -144,7 +146,7 @@ function buttonHandler(){
   has been selected, otherwise just sets the operand to the operation Object variable.
   Also handles concatenating the operand to the history string.
 */
-function operatorHandler(){
+function operatorHandler(button){
   erase = true;
   /*
     This portion of the code is for calculating the answer if the user only keeps on pressing operands instead of equals  
@@ -159,8 +161,12 @@ function operatorHandler(){
       operationObj.num2 = undefined;
       operationObj.operation = undefined;
   }
-  historyString += ` ${button.textContent}`;
+  historyString[1] = button.textContent;
+  history.textContent = historyString.join(" ");
+  /*
+  historyString += `${button.textContent}`;
   history.textContent = historyString;
+  */
   operationObj.operation = button.textContent;
   
   isOperatorPressed = true;
@@ -171,7 +177,7 @@ function operatorHandler(){
   Handler for the 'Equals' event when the equals button is pressed. 
   Calls calculateResult() and changes operationObj values depending on state.
 */
-function equalHandler(){
+function equalHandler(button){
   if(operationObj.num1 !== undefined && operationObj.num2 !== undefined){
     let answer = calculateResult();
 
@@ -181,6 +187,13 @@ function equalHandler(){
     operationObj.num2 = undefined;
     operationObj.operation = undefined;
 
+    historyString[3] = "=";
+    history.textContent = historyString.join(" ");
+    historyString[0] = answer;
+    historyString[2] = "";
+    historyString[3] = "";
+    //historyString += " = ";
+    //history.textContent = historyString;
     erase = true;
     isOperatorPressed = false;
   }
@@ -204,7 +217,7 @@ resetCalc();
 const buttons = document.querySelectorAll('.calculator-button:not(.function-button)');
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
-    buttonHandler();
+    buttonHandler(button);
   });
 });
 
@@ -216,7 +229,7 @@ reset.addEventListener("click", () => {
 const operatorBtns = document.querySelectorAll("#btnDiv, #btnMult, #btnMinus, #btnPlus");
 operatorBtns.forEach((button) => {
   button.addEventListener("click", () => {
-    operatorHandler();
+    operatorHandler(button);
   });
 });
 
