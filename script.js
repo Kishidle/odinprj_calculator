@@ -109,6 +109,7 @@ function displayToVar() {
 function buttonHandler(button) {
   let text = button.textContent;
   //checking if decimal has already been pressed
+  
   if (isDecimalPressed || text === '.') return;
 
   if (display.textContent === "0" || erase) {
@@ -122,8 +123,14 @@ function buttonHandler(button) {
       displayToVar();
     }
     else {
+      
       //erases the current display and starts a new number
       display.textContent = text;
+      if(isEqualPressed){
+        history.textContent = "";
+        isEqualPressed = false;
+      }
+      
       //historyString += text;
       displayToVar();
     }
@@ -174,6 +181,7 @@ function operatorHandler(button) {
   isOperatorPressed = true;
   isDecimalPressed = false;
   isDecimalFirst = true;
+  isEqualPressed = false;
 }
 /*
   Handler for the 'Equals' event when the equals button is pressed. 
@@ -212,6 +220,7 @@ function equalHandler(button) {
 
   isDecimalPressed = false;
   isDecimalFirst = true;
+  isEqualPressed = true;
 }
 resetCalc();
 
