@@ -85,7 +85,7 @@ function calculateResult() {
     answer = operate(operationObj.num1, operationObj.num2, operationObj.operation);
   }
 
-  display.textContent = parseFloat(answer);
+  display.textContent = Math.round(parseFloat(answer) * 10000) / 10000;
   return answer;
 }
 /*
@@ -111,6 +111,8 @@ function buttonHandler(button) {
   //checking if decimal has already been pressed
   
   if (isDecimalPressed || text === '.') return;
+
+  if (display.textContent.length >= 12) return;
 
   if (display.textContent === "0" || erase) {
     //checking if decimal is pressed first before any buttons so it adds a decimal to default value of 0
