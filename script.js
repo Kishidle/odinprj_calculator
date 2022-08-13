@@ -109,7 +109,7 @@ function displayToVar() {
 function buttonHandler(button) {
   let text = button.textContent;
   //checking if decimal has already been pressed
-  
+  if (erase) display.textContent = "";
   if (isDecimalPressed || text === '.') return;
 
   if (display.textContent.length >= 12) return;
